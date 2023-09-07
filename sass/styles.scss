@@ -59,6 +59,13 @@ ul, ol {
 ul li {
   list-style: none;
 }
+
+ul li ul li {
+  list-style: circle;
+  margin-left: 3em;
+  // padding: 1em;
+
+}
 section .header {
   padding-bottom: 30px;
 }
@@ -312,7 +319,7 @@ Hero
 ========================================================================== */
 .hero {
   min-height: 750px;
-  background: url('../img/hero-min.png') center center;
+  background: url('../img/investment-hero.png') center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -467,6 +474,37 @@ Intro
   }
 }
 #intro p {
+  text-align: center;
+}
+
+/* ==========================================================================
+Break
+========================================================================== */
+.visbreak span.icon {
+  font-size: 40px;
+  color: $accent-color;
+  font-weight: bold;
+}
+.visbreak-icon {
+  display: inline-block;
+  vertical-align: top;
+  padding: 6px 0 0 0;
+  margin-right: 20px;
+  width: 40px;
+}
+.visbreak-content {
+  display: inline-block;
+  width: 80%;
+}
+
+#visbreak {
+  padding-top: 40px;
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+#visbreak p {
   text-align: center;
 }
 
@@ -741,6 +779,17 @@ Features-stack
       border-left: solid 1px #FFD700;
     }
 
+    .midcol-black {
+      // padding-right: 100px;
+      // border-right: solid 1px #FFD700;
+      border-left: solid 1px #000000;
+    }
+
+    .midcol-black-right {
+      // padding-right: 100px;
+      // border-right: solid 1px #FFD700;
+      border-right: solid 1px #000000;
+    }
     .rightcol {
     }
   }
