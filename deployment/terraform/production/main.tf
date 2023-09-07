@@ -20,12 +20,12 @@ provider "aws" {
 }
 
 
-data "aws_route53_zone" "farrabs_hosted_zone" {
+data "aws_route53_zone" "appmath_hosted_zone" {
   name = "${local.domain}"
 }
 
 resource "aws_route53_record" "appmath_investments_frontend_cname" {
-  zone_id = data.aws_route53_zone.farrabs_hosted_zone.zone_id
+  zone_id = data.aws_route53_zone.appmath_hosted_zone.zone_id
   name = "investments.${local.domain}"
   type = "CNAME"
   ttl = 1800
