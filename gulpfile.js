@@ -29,8 +29,13 @@ gulp.task("sass", function () {
     .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError))
     .pipe(rename({ basename: "rsvp-form.min" }))
     .pipe(gulp.dest("./css"));
+    var venusStyles = gulp
+    .src("./sass/venus/**/*.scss")
+    .pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError))
+    .pipe(rename({ basename: "venus.min" }))
+    .pipe(gulp.dest("./css"));
 
-  return mergeStream(mainStyles, rsvpFormStyles);
+  return mergeStream(mainStyles, rsvpFormStyles, venusStyles);
 });
 
 // watch changes in scss files and run sass task
