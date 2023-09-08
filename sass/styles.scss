@@ -388,6 +388,41 @@ Hero
     margin-bottom: 10%;
   }
 }
+.hero-mp2 {
+  min-height: 750px;
+  background: url('../img/mp2-hero.png') center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: relative;
+
+  /*.rsvp-btn {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+  }*/
+  .down-arrow a {
+    color: $txt-light;
+  }
+  h1 {
+    color: $txt-light;
+    margin-bottom: 40px;
+  }
+  p.intro {
+    color: $txt-light;
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 80px;
+  }
+  .hero-content {
+    padding-top: 35%;
+  }
+  .hero-content img {
+    width: 55%;
+    margin-bottom: 10%;
+  }
+}
 
 .hero-home {
   min-height: 1024px;
