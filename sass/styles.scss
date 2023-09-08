@@ -352,6 +352,79 @@ Hero
     margin-bottom: 10%;
   }
 }
+
+.hero-bonds {
+  min-height: 750px;
+  background: url('../img/bond-hero.png') center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: relative;
+
+  /*.rsvp-btn {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+  }*/
+  .down-arrow a {
+    color: $txt-light;
+  }
+  h1 {
+    color: $txt-light;
+    margin-bottom: 40px;
+  }
+  p.intro {
+    color: $txt-light;
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 80px;
+  }
+  .hero-content {
+    padding-top: 35%;
+  }
+  .hero-content img {
+    width: 55%;
+    margin-bottom: 10%;
+  }
+}
+
+.hero-home {
+  min-height: 1024px;
+  background: url('../img/investment.png') center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: relative;
+
+  /*.rsvp-btn {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+  }*/
+  .down-arrow a {
+    color: $txt-light;
+  }
+  h1 {
+    color: $txt-light;
+    margin-bottom: 40px;
+  }
+  p.intro {
+    color: $txt-light;
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 80px;
+  }
+  .hero-content {
+    padding-top: 35%;
+  }
+  .hero-content img {
+    width: 55%;
+    margin-bottom: 10%;
+  }
+}
+
 .navigation {
   transition: all 300ms ease-in-out;
   position: fixed;
@@ -821,6 +894,16 @@ Instagram
 }
 
 /* ==========================================================================
+entourage
+========================================================================== */
+.entourage-bonds {
+  img {
+    width: 100%;
+  }
+}
+
+
+/* ==========================================================================
 Engagement Pics
 ========================================================================== */
 #eng-pics {
@@ -1213,4 +1296,88 @@ body.modal-open {
     z-index: 3;
   }
 
+}
+// Define a mixin for common styles
+@mixin table-row {
+  padding: 12px 15px;
+}
+
+// Define styles for the table
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+  // Apply styles to the header
+  thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+  }
+
+  // Apply styles to table cells
+  th, td {
+    @include table-row;
+  }
+
+  // Apply styles to table body rows
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+
+    &:nth-of-type(even) {
+      background-color: #f3f3f3;
+    }
+
+    &:last-of-type {
+      border-bottom: 2px solid #009879;
+    }
+
+    &.active-row {
+      font-weight: bold;
+      color: #009879;
+    }
+  }
+}
+
+// Define styles for the table
+.styled-table2 {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+  // Apply styles to the header
+  thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+  }
+
+  // Apply styles to table cells
+  th, td {
+    @include table-row;
+  }
+
+  // Apply styles to table body rows
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+
+    &:nth-of-type(even) {
+      background-color: #f3f3f3;
+    }
+
+    &:last-of-type {
+      border-top: 2px solid #009879;
+    }
+
+    &.active-row {
+      font-weight: bold;
+      color: #009879;
+    }
+  }
 }
