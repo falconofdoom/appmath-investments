@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gross Profit Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .input-group {
+            margin: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 100px;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .charts-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .chart-container {
+            width: 45%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gross Profit Calculator</h1>
+    <div class="container">
+        <div class="input-group">
+            <label for="revenue">Revenue:</label>
+            <input type="number" id="revenue" value="60000000">
+        </div>
+        <div class="input-group">
+            <label for="units_sold">Units Sold:</label>
+            <input type="number" id="units_sold" value="200000">
+        </div>
+        <div class="input-group">
+            <label for="completed_units">Completed Units:</label>
+            <input type="number" id="completed_units" value="200000">
+        </div>
+        <div class="input-group">
+            <label for="ending_wip">Ending WIP:</label>
+            <input type="number" id="ending_wip" value="10000">
+        </div>
+        <div class="input-group">
+            <label for="cost_added_material">Cost Added Material:</label>
+            <input type="number" id="cost_added_material" value="39375000">
+        </div>
+        <div class="input-group">
+            <label for="cost_added_conversion">Cost Added Conversion:</label>
+            <input type="number" id="cost_added_conversion" value="20807500">
+        </div>
+        <div class="input-group">
+            <label for="material_completion_rate">Material Completion Rate:</label>
+            <input type="range" id="material_completion_rate" min="0" max="1" step="0.01" value="1.0">
+            <span id="material_completion_rate_value">1.0</span>
+        </div>
+        <div class="input-group">
+            <label for="conversion_completion_rate">Conversion Completion Rate:</label>
+            <input type="range" id="conversion_completion_rate" min="0" max="1" step="0.01" value="0.3">
+            <span id="conversion_completion_rate_value">0.3</span>
+        </div>
+    </div>
+    <div class="charts-container">
+        <div class="chart-container">
+            <canvas id="unitCostChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="profitChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const revenueInput = document.getElementById('revenue');
+            const unitsSoldInput = document.getElementById('units_sold');
+            const completedUnitsInput = document.getElementById('completed_units');
+            const endingWipInput = document.getElementById('ending_wip');
+            const costAddedMaterialInput = document.getElementById('cost_added_material');
+            const costAddedConversionInput = document.getElementById('cost_added_conversion');
+            const materialCompletionRateInput = document.getElementById('material_completion_rate');
+            const conversionCompletionRateInput = document.getElementById('conversion_completion_rate');
+            const materialCompletionRateValue = document.getElementById('material_completion_rate_value');
+            const conversionCompletionRateValue = document.getElementById('conversion_completion_rate_value');
+
+            let profitChartCtx = document.getElementById('profitChart').getContext('2d');
+            let unitCostChartCtx = document.getElementById('unitCostChart').getContext('2d');
+
+            let profitChart = new Chart(profitChartCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Revenue', 'COGS', 'Gross Profit'],
+                    datasets: [{
+                        label: 'Gross Profit',
+                        data: [],
+                        backgroundColor: ['#4caf50', '#f44336', '#2196f3']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            let unitCostChart = new Chart(unitCostChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Per Unit Cost'],
+                    datasets: [
+                        {
+                            label: 'Material',
+                            data: [],
+                            backgroundColor: '#ff9800'
+                        },
+                        {
+                            label: 'Conversion',
+                            data: [],
+                            backgroundColor: '#3f51b5'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.dataset.label + ': ' + tooltipItem.raw.toLocaleString();
+                                }
+                            }
+                        },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            weight: 'bold',
+                            formatter: (value, context) => {
+                                const datasetArray = [];
+                                context.chart.data.datasets.forEach((dataset) =>{
+                                    if(dataset.data[context.dataIndex] != undefined) {
+                                        datasetArray.push(dataset.data[context.dataIndex]);
+                                    }
+                                });
+
+                                function totalSum(total, datapoint) {
+                                    return total + datapoint;
+                                }
+
+                                let sum = datasetArray.reduce(totalSum, 0)
+                                
+                                if (context.datasetIndex === datasetArray.length - 1) {
+                                    return sum;
+                                } else {
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true,
+                            grace: '50%',
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels],
+            });
+
+            function calculateAndUpdateCharts() {
+                let revenue = parseFloat(revenueInput.value);
+                let unitsSold = parseFloat(unitsSoldInput.value);
+                let completedUnits = parseFloat(completedUnitsInput.value);
+                let endingWip = parseFloat(endingWipInput.value);
+                let costAddedMaterial = parseFloat(costAddedMaterialInput.value);
+                let costAddedConversion = parseFloat(costAddedConversionInput.value);
+                let materialCompletionRate = parseFloat(materialCompletionRateInput.value);
+                let conversionCompletionRate = parseFloat(conversionCompletionRateInput.value);
+
+                let equivalentUnitsEndingInventoryMaterial = endingWip * materialCompletionRate;
+                let equivalentUnitsEndingInventoryConversion = endingWip * conversionCompletionRate;
+
+                let perUnitMaterial = costAddedMaterial / (completedUnits + equivalentUnitsEndingInventoryMaterial);
+                let perUnitConversion = costAddedConversion / (completedUnits + equivalentUnitsEndingInventoryConversion);
+
+                let perUnitCost = perUnitMaterial + perUnitConversion;
+                let cogs = unitsSold * perUnitCost;
+                let grossProfit = revenue - cogs;
+
+                // Update profit chart
+                profitChart.data.datasets[0].data = [revenue, cogs, grossProfit];
+                profitChart.update();
+
+                // Update unit cost chart
+                unitCostChart.data.datasets[0].data = [perUnitMaterial];
+                unitCostChart.data.datasets[1].data = [perUnitConversion];
+                unitCostChart.update();
+            }
+
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', () => {
+                    if (input.type === 'range') {
+                        if (input.id === 'material_completion_rate') {
+                            materialCompletionRateValue.textContent = input.value;
+                        } else if (input.id === 'conversion_completion_rate') {
+                            conversionCompletionRateValue.textContent = input.value;
+                        }
+                    }
+                    calculateAndUpdateCharts();
+                });
+            });
+
+            calculateAndUpdateCharts();
+        });
+    </script>
+</body>
+</html>
